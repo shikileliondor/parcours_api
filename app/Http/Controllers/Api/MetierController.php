@@ -21,4 +21,37 @@ class MetierController extends Controller
 
         return response()->json($metier);
     }
+
+    public function competences(int $id): JsonResponse
+    {
+        $metier = Metier::query()->findOrFail($id);
+
+        return response()->json([
+            'metier_id' => $metier->id,
+            'metier_nom' => $metier->nom,
+            'competences' => $metier->competences()->orderBy('nom')->get(),
+        ]);
+    }
+
+    public function parcoursEtudes(int $id): JsonResponse
+    {
+        $metier = Metier::query()->findOrFail($id);
+
+        return response()->json([
+            'metier_id' => $metier->id,
+            'metier_nom' => $metier->nom,
+            'parcours_etudes' => $metier->parcoursEtudes()->orderBy('nom')->get(),
+        ]);
+    }
+
+    public function ecoles(int $id): JsonResponse
+    {
+        $metier = Metier::query()->findOrFail($id);
+
+        return response()->json([
+            'metier_id' => $metier->id,
+            'metier_nom' => $metier->nom,
+            'ecoles' => $metier->ecoles()->orderBy('nom')->get(),
+        ]);
+    }
 }

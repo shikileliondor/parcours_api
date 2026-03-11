@@ -4,7 +4,7 @@ API REST minimale pour tester la communication entre Flutter (application mobile
 
 ## Ressource principale
 
-Table unique : `metiers`
+Table principale : `metiers`
 
 Champs :
 - `nom`
@@ -17,8 +17,13 @@ Champs :
 
 - `GET /api/metiers` : retourne la liste des métiers
 - `GET /api/metiers/{id}` : retourne le détail d'un métier
+- `GET /api/metiers/{id}/competences` : retourne les compétences liées au métier
+- `GET /api/metiers/{id}/parcours-etudes` : retourne les parcours d'étude associés
+- `GET /api/metiers/{id}/ecoles` : retourne les écoles proposant une formation liée
 
-## Exemple de réponse JSON
+## Exemples de réponses JSON
+
+### Liste des métiers
 
 ```json
 [
@@ -31,6 +36,22 @@ Champs :
     "salaire_max": 60000
   }
 ]
+```
+
+### Compétences d'un métier
+
+```json
+{
+  "metier_id": 1,
+  "metier_nom": "Développeur Web",
+  "competences": [
+    {
+      "id": 1,
+      "nom": "PHP / Laravel",
+      "description": "Développer des API robustes"
+    }
+  ]
+}
 ```
 
 ## Connexion Flutter ↔ Laravel (émulateur Android)
@@ -59,11 +80,17 @@ Cette URL est déjà configurée dans :
 - `flutter_example/lib/main.dart`
 - `flutter_example/pubspec.yaml`
 
-## Fichiers ajoutés
+## Fichiers API
 
-- Modèle : `app/Models/Metier.php`
+- Modèles :
+  - `app/Models/Metier.php`
+  - `app/Models/Competence.php`
+  - `app/Models/ParcoursEtude.php`
+  - `app/Models/Ecole.php`
 - Contrôleur API : `app/Http/Controllers/Api/MetierController.php`
-- Migration : `database/migrations/2026_03_11_000000_create_metiers_table.php`
+- Migrations :
+  - `database/migrations/2026_03_11_000000_create_metiers_table.php`
+  - `database/migrations/2026_03_11_000100_create_metier_related_tables.php`
 - Routes : `routes/api.php`
 - Seeders : `database/seeders/MetierSeeder.php` et `database/seeders/DatabaseSeeder.php`
 
