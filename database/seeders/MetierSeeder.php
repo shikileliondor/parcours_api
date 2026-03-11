@@ -28,6 +28,24 @@ class MetierSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nom' => 'Data Scientist',
+                'description' => 'Analyse les données et construit des modèles prédictifs',
+                'salaire_min' => 30000,
+                'salaire_moyen' => 50000,
+                'salaire_max' => 80000,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+                [
+                    'nom' => 'Chef de projet',
+                    'description' => 'Gère les projets et coordonne les équipes',
+                    'salaire_min' => 25000,
+                    'salaire_moyen' => 40000,
+                    'salaire_max' => 70000,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
         ]);
     }
 }
