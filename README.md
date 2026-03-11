@@ -33,6 +33,32 @@ Champs :
 ]
 ```
 
+## Connexion Flutter ↔ Laravel (émulateur Android)
+
+Le dossier `flutter_example/` contient un exemple complet minimal qui :
+
+1. appelle l'API Laravel,
+2. transforme le JSON en objets `Metier`,
+3. affiche les métiers dans une liste Flutter.
+
+### Point important pour Android Emulator
+
+Depuis l'émulateur Android, `127.0.0.1` pointe vers l'émulateur lui-même, pas vers la machine hôte.
+Il faut donc utiliser :
+
+- `http://10.0.2.2:8000/api/metiers`
+
+Cette URL est déjà configurée dans :
+`flutter_example/lib/services/metier_api_service.dart`.
+
+### Fichiers Flutter d'exemple
+
+- `flutter_example/lib/models/metier.dart`
+- `flutter_example/lib/services/metier_api_service.dart`
+- `flutter_example/lib/pages/metiers_page.dart`
+- `flutter_example/lib/main.dart`
+- `flutter_example/pubspec.yaml`
+
 ## Fichiers ajoutés
 
 - Modèle : `app/Models/Metier.php`
