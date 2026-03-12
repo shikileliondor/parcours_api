@@ -1,47 +1,55 @@
 # Parcours API (Laravel)
 
-API REST minimale pour tester la communication entre Flutter (application mobile **Parcours**) et un backend Laravel.
+API REST pour alimenter l'application mobile **Parcours**.
 
-## Ressource principale
+## Ressources couvertes
 
-Table unique : `metiers`
-
-Champs :
-- `nom`
-- `description`
-- `salaire_min`
-- `salaire_moyen`
-- `salaire_max`
+- Métier (données générales + salaire + durée estimée)
+- Compétences requises
+- Parcours d'étude
+- Écoles recommandées
+- Roadmap (étapes guidées)
 
 ## Endpoints API
 
-- `GET /api/metiers` : retourne la liste des métiers
-- `GET /api/metiers/{id}` : retourne le détail d'un métier
+- `GET /api/metiers` : liste des métiers
+- `GET /api/metiers/{id}` : détail brut d'un métier
+- `GET /api/metiers/{id}/fiche` : payload complet pour l'écran détail mobile
+- `GET /api/metiers/{id}/competences` : compétences liées au métier
+- `GET /api/metiers/{id}/parcours-etudes` : parcours d'étude liés au métier
+- `GET /api/metiers/{id}/ecoles` : écoles liées au métier
+  - filtres optionnels : `?ville=Dakar&pays=Sénégal`
 
-## Exemple de réponse JSON
+## Exemple de réponse (`GET /api/metiers/{id}/fiche`)
 
 ```json
-[
-  {
-    "id": 1,
-    "nom": "Développeur Web",
-    "description": "Crée des applications web",
-    "salaire_min": 20000,
-    "salaire_moyen": 35000,
-    "salaire_max": 60000
-  }
-]
+{
+  "id": 4,
+  "nom": "Chef de projet",
+  "description": "Gère les projets et coordonne les équipes",
+  "salaire": {
+    "min": 25000,
+    "moyen": 40000,
+    "max": 70000,
+    "devise": "FCFA"
+  },
+  "duree_estimee": "3 à 5 ans",
+  "competences": [],
+  "parcours_etudes": [],
+  "ecoles_recommandees": [],
+  "roadmap": [
+    {
+      "ordre": 1,
+      "titre": "Diplôme requis"
+    }
+  ]
+}
 ```
 
-## Fichiers ajoutés
+## Fichiers principaux
 
-- Modèle : `app/Models/Metier.php`
+- Modèles : `app/Models/*.php`
 - Contrôleur API : `app/Http/Controllers/Api/MetierController.php`
-- Migration : `database/migrations/2026_03_11_000000_create_metiers_table.php`
+- Migrations : `database/migrations/*metier*`
 - Routes : `routes/api.php`
-- Seeders : `database/seeders/MetierSeeder.php` et `database/seeders/DatabaseSeeder.php`
-
-## Notes
-
-Ce dépôt ne contient pas encore l'intégralité du squelette Laravel (artisan, composer.json, bootstrap, etc.).
-Le code livré ici correspond aux éléments métier/API demandés, prêts à être intégrés dans un projet Laravel standard.
+- Seeders : `database/seeders/MetierSeeder.php`

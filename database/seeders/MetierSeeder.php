@@ -6,6 +6,7 @@ use App\Models\Competence;
 use App\Models\Ecole;
 use App\Models\Metier;
 use App\Models\ParcoursEtude;
+use App\Models\RoadmapEtape;
 use Illuminate\Database\Seeder;
 
 class MetierSeeder extends Seeder
@@ -18,6 +19,7 @@ class MetierSeeder extends Seeder
             'salaire_min' => 20000,
             'salaire_moyen' => 35000,
             'salaire_max' => 60000,
+            'duree_estimee' => '3 à 5 ans',
         ]);
 
         $dataAnalyst = Metier::query()->create([
@@ -26,6 +28,7 @@ class MetierSeeder extends Seeder
             'salaire_min' => 24000,
             'salaire_moyen' => 38000,
             'salaire_max' => 65000,
+            'duree_estimee' => '3 à 5 ans',
         ]);
 
         $dataScientist = Metier::query()->create([
@@ -34,6 +37,7 @@ class MetierSeeder extends Seeder
             'salaire_min' => 30000,
             'salaire_moyen' => 50000,
             'salaire_max' => 80000,
+            'duree_estimee' => '3 à 5 ans',
         ]);
 
         $chefProjet = Metier::query()->create([
@@ -42,6 +46,7 @@ class MetierSeeder extends Seeder
             'salaire_min' => 25000,
             'salaire_moyen' => 40000,
             'salaire_max' => 70000,
+            'duree_estimee' => '3 à 5 ans',
         ]);
 
         $competences = [
@@ -59,10 +64,10 @@ class MetierSeeder extends Seeder
         ];
 
         $ecoles = [
-            'Université de Paris' => Ecole::query()->create(['nom' => 'Université de Paris', 'ville' => 'Paris', 'site_web' => 'https://u-paris.fr']),
-            'Epitech' => Ecole::query()->create(['nom' => 'Epitech', 'ville' => 'Paris', 'site_web' => 'https://www.epitech.eu']),
-            '42' => Ecole::query()->create(['nom' => '42', 'ville' => 'Paris', 'site_web' => 'https://42.fr']),
-            'INSA Lyon' => Ecole::query()->create(['nom' => 'INSA Lyon', 'ville' => 'Lyon', 'site_web' => 'https://www.insa-lyon.fr']),
+            'Université de Dakar' => Ecole::query()->create(['nom' => 'Université de Dakar', 'ville' => 'Dakar', 'pays' => 'Sénégal', 'site_web' => 'https://www.ucad.sn']),
+            'Epitech Dakar' => Ecole::query()->create(['nom' => 'Epitech Dakar', 'ville' => 'Dakar', 'pays' => 'Sénégal', 'site_web' => 'https://www.epitech.eu']),
+            'ESATIC' => Ecole::query()->create(['nom' => 'ESATIC', 'ville' => 'Abidjan', 'pays' => 'Côte d\'Ivoire', 'site_web' => 'https://www.esatic.ci']),
+            'INPHB' => Ecole::query()->create(['nom' => 'INPHB', 'ville' => 'Yamoussoukro', 'pays' => 'Côte d\'Ivoire', 'site_web' => 'https://inphb.ci']),
         ];
 
         $developpeurWeb->competences()->sync([
@@ -74,8 +79,8 @@ class MetierSeeder extends Seeder
             $parcours['Licence Informatique']->id,
         ]);
         $developpeurWeb->ecoles()->sync([
-            $ecoles['Epitech']->id,
-            $ecoles['42']->id,
+            $ecoles['Epitech Dakar']->id,
+            $ecoles['Université de Dakar']->id,
         ]);
 
         $dataAnalyst->competences()->sync([
@@ -87,8 +92,8 @@ class MetierSeeder extends Seeder
             $parcours['Master Data Science']->id,
         ]);
         $dataAnalyst->ecoles()->sync([
-            $ecoles['Université de Paris']->id,
-            $ecoles['INSA Lyon']->id,
+            $ecoles['Université de Dakar']->id,
+            $ecoles['INPHB']->id,
         ]);
 
         $dataScientist->competences()->sync([
@@ -100,8 +105,8 @@ class MetierSeeder extends Seeder
             $parcours['École d\'ingénieur']->id,
         ]);
         $dataScientist->ecoles()->sync([
-            $ecoles['Université de Paris']->id,
-            $ecoles['INSA Lyon']->id,
+            $ecoles['ESATIC']->id,
+            $ecoles['INPHB']->id,
         ]);
 
         $chefProjet->competences()->sync([
@@ -113,8 +118,37 @@ class MetierSeeder extends Seeder
             $parcours['Licence Informatique']->id,
         ]);
         $chefProjet->ecoles()->sync([
-            $ecoles['Epitech']->id,
-            $ecoles['INSA Lyon']->id,
+            $ecoles['Epitech Dakar']->id,
+            $ecoles['ESATIC']->id,
+        ]);
+
+        $this->seedRoadmap($developpeurWeb);
+        $this->seedRoadmap($dataAnalyst);
+        $this->seedRoadmap($dataScientist);
+        $this->seedRoadmap($chefProjet);
+    }
+
+    private function seedRoadmap(Metier $metier): void
+    {
+        RoadmapEtape::query()->create([
+            'metier_id' => $metier->id,
+            'ordre' => 1,
+            'titre' => 'Diplôme requis',
+            'description' => 'Obtenir un diplôme pertinent en informatique, data ou gestion selon le métier visé.',
+        ]);
+
+        RoadmapEtape::query()->create([
+            'metier_id' => $metier->id,
+            'ordre' => 2,
+            'titre' => 'Compétences à apprendre',
+            'description' => 'Développer les compétences techniques et transversales indispensables au poste.',
+        ]);
+
+        RoadmapEtape::query()->create([
+            'metier_id' => $metier->id,
+            'ordre' => 3,
+            'titre' => 'Expériences recommandées',
+            'description' => 'Cumuler des stages, projets concrets et expériences professionnelles progressives.',
         ]);
     }
 }

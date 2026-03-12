@@ -13,6 +13,7 @@ class Ecole extends Model
     protected $fillable = [
         'nom',
         'ville',
+        'pays',
         'site_web',
     ];
 

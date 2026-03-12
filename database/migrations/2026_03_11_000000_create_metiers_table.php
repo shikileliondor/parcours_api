@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->unsignedInteger('salaire_min');
             $table->unsignedInteger('salaire_moyen');
             $table->unsignedInteger('salaire_max');
+            $table->string('duree_estimee')->nullable();
             $table->timestamps();
         });
     }
