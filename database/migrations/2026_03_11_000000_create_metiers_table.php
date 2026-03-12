@@ -9,13 +9,15 @@ return new class extends Migration {
     {
         Schema::create('metiers', function (Blueprint $table): void {
             $table->id();
-            $table->string('nom');
+            $table->string('nom')->unique();
             $table->text('description');
             $table->unsignedInteger('salaire_min');
             $table->unsignedInteger('salaire_moyen');
             $table->unsignedInteger('salaire_max');
             $table->string('duree_estimee')->nullable();
             $table->timestamps();
+
+            $table->index(['salaire_min', 'salaire_max']);
         });
     }
 
