@@ -3,48 +3,34 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MetierDetailResource;
+use App\Http\Resources\MetierResumeResource;
 use App\Models\Metier;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class MetierController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(): AnonymousResourceCollection
     {
         $metiers = Metier::query()->orderBy('nom')->get();
 
-        return response()->json($metiers);
+        return MetierResumeResource::collection($metiers);
     }
 
-    public function show(int $id): JsonResponse
-    {
-        $metier = Metier::query()->findOrFail($id);
-
-        return response()->json($metier);
-    }
-
-    public function fiche(int $id): JsonResponse
+    public function show(int $id): MetierDetailResource
     {
         $metier = Metier::query()
             ->with(['competences', 'parcoursEtudes', 'ecoles', 'roadmapEtapes'])
             ->findOrFail($id);
 
-        return response()->json([
-            'id' => $metier->id,
-            'nom' => $metier->nom,
-            'description' => $metier->description,
-            'salaire' => [
-                'min' => $metier->salaire_min,
-                'moyen' => $metier->salaire_moyen,
-                'max' => $metier->salaire_max,
-                'devise' => 'FCFA',
-            ],
-            'duree_estimee' => $metier->duree_estimee,
-            'competences' => $metier->competences,
-            'parcours_etudes' => $metier->parcoursEtudes,
-            'ecoles_recommandees' => $metier->ecoles,
-            'roadmap' => $metier->roadmapEtapes,
-        ]);
+        return new MetierDetailResource($metier);
+    }
+
+    public function fiche(int $id): MetierDetailResource
+    {
+        return $this->show($id);
     }
 
     public function competences(int $id): JsonResponse
