@@ -30,6 +30,41 @@ class MetierApiTest extends TestCase
                 'salaire_min',
                 'salaire_moyen',
                 'salaire_max',
+                'duree_estimee',
+            ]);
+    }
+
+    public function test_metier_fiche_endpoint_returns_full_mobile_payload(): void
+    {
+        $response = $this->getJson('/api/metiers/4/fiche');
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('nom', 'Chef de projet')
+            ->assertJsonPath('duree_estimee', '3 à 5 ans')
+            ->assertJsonPath('salaire.devise', 'FCFA')
+            ->assertJsonCount(2, 'competences')
+            ->assertJsonCount(2, 'parcours_etudes')
+            ->assertJsonCount(2, 'ecoles_recommandees')
+            ->assertJsonCount(3, 'roadmap')
+            ->assertJsonStructure([
+                'id',
+                'nom',
+                'description',
+                'salaire' => ['min', 'moyen', 'max', 'devise'],
+                'duree_estimee',
+                'competences' => [
+                    ['id', 'nom', 'description'],
+                ],
+                'parcours_etudes' => [
+                    ['id', 'nom', 'niveau', 'description'],
+                ],
+                'ecoles_recommandees' => [
+                    ['id', 'nom', 'ville', 'pays', 'site_web'],
+                ],
+                'roadmap' => [
+                    ['id', 'ordre', 'titre', 'description'],
+                ],
             ]);
     }
 
@@ -78,9 +113,22 @@ class MetierApiTest extends TestCase
             ->assertJsonStructure([
                 'metier_id',
                 'metier_nom',
+                'filters' => ['ville', 'pays'],
                 'ecoles' => [
-                    ['id', 'nom', 'ville', 'site_web'],
+                    ['id', 'nom', 'ville', 'pays', 'site_web'],
                 ],
             ]);
+    }
+
+    public function test_metier_ecoles_endpoint_supports_city_and_country_filters(): void
+    {
+        $response = $this->getJson('/api/metiers/4/ecoles?ville=Dakar&pays=Sénégal');
+
+        $response
+            ->assertOk()
+            ->assertJsonPath('filters.ville', 'Dakar')
+            ->assertJsonPath('filters.pays', 'Sénégal')
+            ->assertJsonCount(1, 'ecoles')
+            ->assertJsonPath('ecoles.0.nom', 'Epitech Dakar');
     }
 }

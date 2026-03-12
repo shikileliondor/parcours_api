@@ -26,7 +26,17 @@ return new class extends Migration {
             $table->id();
             $table->string('nom');
             $table->string('ville')->nullable();
+            $table->string('pays')->nullable();
             $table->string('site_web')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('roadmap_etapes', function (Blueprint $table): void {
+            $table->id();
+            $table->foreignId('metier_id')->constrained('metiers')->cascadeOnDelete();
+            $table->unsignedInteger('ordre');
+            $table->string('titre');
+            $table->text('description')->nullable();
             $table->timestamps();
         });
 
@@ -60,6 +70,7 @@ return new class extends Migration {
         Schema::dropIfExists('ecole_metier');
         Schema::dropIfExists('metier_parcours_etude');
         Schema::dropIfExists('competence_metier');
+        Schema::dropIfExists('roadmap_etapes');
         Schema::dropIfExists('ecoles');
         Schema::dropIfExists('parcours_etudes');
         Schema::dropIfExists('competences');
