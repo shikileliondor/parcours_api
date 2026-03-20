@@ -20,16 +20,16 @@ class Ecole extends Model
 
     public function metiers(): BelongsToMany
     {
-        return $this->belongsToMany(Metier::class);
+        return $this->belongsToMany(Metier::class, 'ecole_metier');
     }
 
     public function domaines(): BelongsToMany
     {
-        return $this->belongsToMany(Domaine::class);
+        return $this->belongsToMany(Domaine::class, 'ecole_domaine');
     }
 
     public function filieres(): BelongsToMany
     {
-        return $this->belongsToMany(Filiere::class);
+        return $this->belongsToMany(Filiere::class, 'ecole_filiere');
     }
 }

@@ -14,6 +14,6 @@ class Domaine extends Model
 
     public function ecoles(): BelongsToMany
     {
-        return $this->belongsToMany(Ecole::class);
+        return $this->belongsToMany(Ecole::class, 'ecole_domaine');
     }
 }
