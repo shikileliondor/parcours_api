@@ -17,6 +17,12 @@ class DatabaseSeeder extends Seeder
             MetierSeeder::class,
             RoadmapEtapeSeeder::class,
             EcoleSeeder::class,
+            ReferentielsV1Seeder::class,
+            MetiersV1Seeder::class,
+            ParcoursV1Seeder::class,
+            EtablissementsFormationsV1Seeder::class,
+            UtilisateursProgressionV1Seeder::class,
+            TransverseV1Seeder::class,
         ]);
     }
 }
