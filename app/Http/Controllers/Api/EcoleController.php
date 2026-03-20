@@ -9,9 +9,9 @@ use App\Http\Resources\FilterOptionsResource;
 use App\Models\Domaine;
 use App\Models\Ecole;
 use App\Models\Filiere;
+use App\Services\EcoleQueryBuilder;
 use App\Support\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use App\Services\EcoleQueryBuilder;
 
 class EcoleController extends Controller
 {
@@ -43,6 +43,20 @@ class EcoleController extends Controller
         $ecole->load(['domaines', 'filieres']);
 
         return ApiResponse::success(new EcoleResource($ecole), 'Détail de l\'école récupéré avec succès.');
+    }
+
+    public function programs(Ecole $ecole): JsonResponse
+    {
+        $ecole->load('filieres');
+
+        return ApiResponse::success([
+            'ecole_id' => $ecole->id,
+            'ecole_nom' => $ecole->nom,
+            'formations' => $ecole->filieres->map(fn (Filiere $filiere) => [
+                'id' => $filiere->id,
+                'nom' => $filiere->nom,
+            ])->values(),
+        ], 'Formations de l\'école récupérées avec succès.');
     }
 
     public function filters(): JsonResponse
