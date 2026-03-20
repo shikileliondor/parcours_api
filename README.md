@@ -53,3 +53,29 @@ API REST pour alimenter l'application mobile **Parcours**.
 - Migrations : `database/migrations/*metier*`
 - Routes : `routes/api.php`
 - Seeders : `database/seeders/MetierSeeder.php`
+
+## Décisions produit/BDD V1 (discussion)
+
+Suite à la discussion de cadrage, les décisions V1 retenues sont :
+
+1. **Comptes utilisateurs dès la V1 (recommandation)**
+   - garder `utilisateurs` dès maintenant pour activer les favoris, la progression roadmap et la personnalisation basique ;
+   - démarrer simple (email, mot de passe, rôle, timestamps), puis enrichir le profil en V2.
+2. **Contacts établissements en V1**
+   - inclure directement les champs de contact (email, téléphone, site web, adresse).
+3. **Coût des formations en V1**
+   - stocker un coût indicatif pour aider la décision (montant min/max + devise si possible).
+4. **Un seul parcours par métier en V1**
+   - simplifie l'expérience et l'administration de contenu ;
+   - la multi-version roadmap pourra être ajoutée en V2.
+
+### Recommandation détaillée pour le point 1 ("tu proposes quoi ?")
+
+Je recommande de **garder les utilisateurs dès la V1**, en version légère :
+
+- `utilisateurs` (authentification + rôle)
+- `favoris_metiers`
+- `favoris_etablissements`
+- `progressions_parcours`
+
+Cela apporte une vraie valeur produit immédiate sans alourdir fortement le modèle.
