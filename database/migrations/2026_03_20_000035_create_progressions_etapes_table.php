@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->timestamp('complete_le')->nullable();
             $table->timestamp('cree_le')->useCurrent();
             $table->timestamp('mis_a_jour_le')->nullable()->useCurrentOnUpdate();
-            $table->unique(['progression_parcours_id', 'etape_parcours_id']);
+            $table->unique(['progression_parcours_id', 'etape_parcours_id'], 'prog_etapes_prog_etape_unique');
         });
     }
 
