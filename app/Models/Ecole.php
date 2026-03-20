@@ -12,13 +12,24 @@ class Ecole extends Model
 
     protected $fillable = [
         'nom',
+        'slug',
         'ville',
-        'pays',
-        'site_web',
+        'type',
+        'logo_url',
     ];
 
     public function metiers(): BelongsToMany
     {
         return $this->belongsToMany(Metier::class);
+    }
+
+    public function domaines(): BelongsToMany
+    {
+        return $this->belongsToMany(Domaine::class);
+    }
+
+    public function filieres(): BelongsToMany
+    {
+        return $this->belongsToMany(Filiere::class);
     }
 }

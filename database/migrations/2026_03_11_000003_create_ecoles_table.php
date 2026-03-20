@@ -9,14 +9,18 @@ return new class extends Migration {
     {
         Schema::create('ecoles', function (Blueprint $table): void {
             $table->id();
-            $table->string('nom');
-            $table->string('ville')->nullable();
-            $table->string('pays')->nullable();
-            $table->string('site_web')->nullable();
+            $table->string('nom', 120);
+            $table->string('slug', 160)->unique();
+            $table->string('ville', 80);
+            $table->string('type', 40);
+            $table->string('logo_url', 2048)->nullable();
             $table->timestamps();
 
-            $table->index(['ville', 'pays']);
-            $table->unique(['nom', 'ville', 'pays']);
+            $table->unique(['nom', 'ville']);
+            $table->index('nom');
+            $table->index('ville');
+            $table->index('type');
+            $table->index(['ville', 'type']);
         });
     }
 

@@ -7,9 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class MetierDetailResource extends JsonResource
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         return [
@@ -39,8 +36,8 @@ class MetierDetailResource extends JsonResource
                 'id' => $ecole->id,
                 'nom' => $ecole->nom,
                 'ville' => $ecole->ville,
-                'pays' => $ecole->pays,
-                'site_web' => $ecole->site_web,
+                'type' => $ecole->type,
+                'logo_url' => $ecole->logo_url,
             ])->values(),
             'roadmap_etapes' => $this->roadmapEtapes->map(fn ($etape) => [
                 'ordre' => $etape->ordre,
