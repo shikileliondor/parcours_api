@@ -65,16 +65,11 @@ class MetierController extends Controller
             $ecolesQuery->where('ville', $request->string('ville'));
         }
 
-        if ($request->filled('pays')) {
-            $ecolesQuery->where('pays', $request->string('pays'));
-        }
-
         return response()->json([
             'metier_id' => $metier->id,
             'metier_nom' => $metier->nom,
             'filters' => [
                 'ville' => $request->query('ville'),
-                'pays' => $request->query('pays'),
             ],
             'ecoles' => $ecolesQuery->get(),
         ]);

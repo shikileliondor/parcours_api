@@ -1,8 +1,13 @@
 <?php
 
+use App\Support\ApiResponse;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,8 +17,30 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (ValidationException $e) {
+            return ApiResponse::error('VALIDATION_ERROR', 'Les données fournies sont invalides.', $e->errors(), 422);
+        });
+
+        $exceptions->render(function (ModelNotFoundException $e) {
+            return ApiResponse::error('NOT_FOUND', 'Ressource introuvable.', null, 404);
+        });
+
+        $exceptions->render(function (AuthenticationException $e) {
+            return ApiResponse::error('UNAUTHORIZED', 'Authentification requise.', null, 401);
+        });
+
+        $exceptions->render(function (AuthorizationException $e) {
+            return ApiResponse::error('FORBIDDEN', 'Action non autorisée.', null, 403);
+        });
+
+        $exceptions->render(function (Throwable $e) {
+            report($e);
+
+            return ApiResponse::error('SERVER_ERROR', 'Une erreur interne est survenue.', null, 500);
+        });
     })->create();
